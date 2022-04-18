@@ -22,9 +22,12 @@ router.post('/newProfile', multerImageUpload.single('profileImage'), (request, r
         firstName: request.body.firstName,
         lastName: request.body.lastName,
         emailAddress: request.body.emailAddress,
+        city: request.body.city,
         gender: request.body.gender,
         datingGender: request.body.datingGender,
         profileBio: request.body.profileBio,
+        employment: request.body.employment,
+        hobbies: request.body.hobbies,
         profileImage: request.file.path
     })
 
