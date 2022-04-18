@@ -15,6 +15,10 @@ const profileSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    city: {
+        type: String,
+        required: true
+    },
     gender: {
         type: String,
         required: true
@@ -25,6 +29,14 @@ const profileSchema = new mongoose.Schema({
     },
     profileBio: {
         type: String,
+        required: true
+    },
+    employment: {
+        type: String,
+        required: true
+    },
+    hobbies: {
+        type: Array,
         required: true
     },
     profileImage: {
