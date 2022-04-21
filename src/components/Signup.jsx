@@ -1,18 +1,5 @@
 import React, {useState} from 'react'
 
-/*
-        firstName: request.body.firstName,
-        lastName: request.body.lastName,
-        emailAddress: request.body.emailAddress,
-        city: request.body.city,
-        gender: request.body.gender,
-        datingGender: request.body.datingGender,
-        profileBio: request.body.profileBio,
-        employment: request.body.employment,
-        hobbies: request.body.hobbies,
-        profileImage: request.file.path ????? 
-*/
-
 function Signup() {
 
 const [gender, setGender] = useState('');
@@ -25,21 +12,6 @@ const [city, setCity] = useState('');
 const [age, setAge] = useState('');
 const [message, setMessage] = useState('')
 const [error, setError] = useState('')
-
-
-
-/*
-function getAge(dateString) {
-    var today = new Date();
-    var birthDate = new Date(dateString);
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
-        age--;
-    }
-    return age;
-}
-*/
 
 
 const handleSubmit = (e) => {
@@ -59,13 +31,15 @@ const handleSubmit = (e) => {
 
         console.log(formdata)
 
+        //validation
+
+
 }
 
   return (
 
     <div>
       <h2>Fyll i din information</h2>
-
 
     <form className="signupform" onSubmit={handleSubmit}>
 
@@ -114,7 +88,7 @@ const handleSubmit = (e) => {
                 onChange={e => setAge(e.target.value)} />
              </div>
 
-            <div className="city">
+            <div className="City">
                 <input type="text" id="city" name="city" placeholder="Stad" value={city} 
                 onChange={e => setCity(e.target.value)} />
             </div>
