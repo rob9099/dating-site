@@ -1,7 +1,7 @@
 import './css/styles.css';
-import Login from './frontend/Login'
-import Signup from './frontend/Signup'
-import Home from './frontend/Home'
+import Login from './components/Login'
+import Signup from './components/Signup'
+import Home from './components/Home'
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 
