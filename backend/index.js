@@ -22,5 +22,4 @@ mongoose.connect(process.env.DATABASE_ACCESS, () => console.log('Database connec
 
 
 index.use('/', routes);
-index.use(express.static('./public'))
 index.listen(port, () => console.log(`Server started on port ${port}`))
