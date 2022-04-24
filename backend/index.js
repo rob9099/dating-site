@@ -50,6 +50,34 @@ index.post("/api/login", (req, res) => {
     //res.json("yup it works") // denna rad för att testa post på postman
 });
 
+const verify = (req,res,next) => {
+    const authHeader = req.headers.authorization;
+    if(authHeader){
+        const token =  authHeader.split(" ")[1];
+
+        jwt.verify(token, "mySecretKey", (err,user) =>{
+            if (err) {
+                return res.status(403).json("Token is not valid");
+            }
+
+            req.user = user;
+            next();
+        });
+
+    }else {
+        res.status(401).json("you are not authenticated");
+    }
+};
+
+index.delete("/api/users/:userId", verify, (req,res) => {
+    if (req.user.id === req.params.userId || req.user.isAdmin){
+        res.status(200).json("User has been deleted.")
+    } else {
+        res.status(403).json("You are not able to delete other users");
+    }
+});
+
+
 
 
 
