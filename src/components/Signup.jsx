@@ -1,4 +1,8 @@
-import React, {useState} from 'react'
+import '../css/styles.css'
+import React, {useEffect, useState} from 'react'
+import { Link } from 'react-router-dom';
+import img from '../img/logo.gif'
+import axios from 'axios';
 
 function Signup() {
 
@@ -9,37 +13,82 @@ const [lastName, setlastName] = useState('');
 const [emailAdress, setemailAdress] = useState('');
 const [password, setPassword] = useState('');
 const [city, setCity] = useState('');
-const [age, setAge] = useState('');
-const [message, setMessage] = useState('')
-const [error, setError] = useState('')
+const [age, setAge] = useState(18);
+const [formerrors, setformErrors] = useState({});
+const [isSubmit, setisSubmit] = useState(false)
+
+const formdata = {
+  gender: firstName,
+  datingGender: datingGender,
+  firstName: firstName,
+  lastName: lastName,
+  emailAdress: emailAdress,
+  password: password,
+  city: city,
+  age: age
+}
 
 
 const handleSubmit = (e) => {
+  e.preventDefault();
+  setformErrors(validation(formdata))
+  setisSubmit(true)
 
-        e.preventDefault();
-
-        const formdata = {
-          gender: gender,
-          datingGender: datingGender,
-          firstName: firstName,
-          lastName: lastName,
-          emailAdress: emailAdress,
-          password: password,
-          city: city,
-          age: age
-        }
-
-        console.log(formdata)
-
-        //validation
-
+  if (Object.keys(formerrors).length === 0 && isSubmit) {
+    axios.post('http://localhost:5000/newProfile', formdata)
+    .then(res => console.log(res.data))
+    .catch(error => console.log(error))
+  } else {
+    console.log(formerrors)
+  }
 
 }
 
-  return (
 
-    <div>
-      <h2>Fyll i din information</h2>
+
+
+const validation = () => {
+  const errors = {};
+
+  if (!firstName) {
+    errors.firstName = "Vänligen skriv ditt förnamn"
+  }
+  if (!gender) {
+    errors.gender = "Vänligen bocka för ditt kön"
+  }
+  if (!datingGender) {
+    errors.datingGender = "Vänligen bocka för vilket du är intresserad av"
+  }
+  if (!lastName) {
+    errors.lastName = "Vänligen skriv ditt efternamn"
+  }
+  if (!emailAdress) {
+    errors.emailAdress = "Vänligen skriv in din mail"
+  }
+  if (!password) {
+    errors.password = "Vänligen skriv in ditt lösenord"
+  }
+  if (!city) {
+    errors.city = "Vänligen skriv in din stad"
+  }
+  if (!age) {
+    errors.age = "Vänligen skriv din ålder"
+  }
+  if (age < 18) {
+    errors.age = "Du måste vara över 18"
+  }
+
+  return errors
+  
+}
+
+  return (
+  <section className="signUp">
+
+    <img src={img} alt="img"></img>
+
+    <div className="innerSignup">
+      <h1>Fyll i din information</h1>
 
     <form className="signupform" onSubmit={handleSubmit}>
 
@@ -52,6 +101,7 @@ const handleSubmit = (e) => {
                   checked={gender === "Jag är en kvinna"} onChange={e => setGender(e.target.value)} />
                   <label>Jag är en kvinna</label>
             </div>
+            <p>{formerrors.gender}</p>
 
             <div className="DatingGender">
                   <input type="radio" id="DatingMale" name="DatingMale" value="Söker en man" 
@@ -62,43 +112,58 @@ const handleSubmit = (e) => {
                   checked={datingGender === "Söker en kvinna"} onChange={e => setdatingGender(e.target.value)} />
                   <label>Söker en kvinna</label>
             </div>
+            <p>{formerrors.datingGender}</p>
 
             <div className="Firstname">
-                  <input type="text" id="firstname" name="firstname" placeholder="Förnamn" value={firstName} 
+                  <input type="text" id="Firstname" name="firstname" placeholder="Förnamn" value={firstName} 
                   onChange={e => setfirstName(e.target.value)} />
              </div> 
+             <p>{formerrors.firstName}</p>
 
              <div className="Lastname">
                  <input type="text" id="Lastname" name="lastname" placeholder="Efternamn" value={lastName}
                  onChange={e => setlastName(e.target.value)} />
             </div>
+            <p>{formerrors.lastName}</p>
 
             <div className="EmailAdress">
-                <input type="email" id="email" name="email" placeholder="E-mail" value={emailAdress}
+                <input type="email" id="Email" name="email" placeholder="E-mail" value={emailAdress}
                 onChange={e => setemailAdress(e.target.value)} />
             </div> 
+            <p>{formerrors.emailAdress}</p>
 
              <div className="Password">
-                 <input type="password" id="password" name="password" placeholder="Lösenord" value={password} 
+                 <input type="password" id="Password" name="password" placeholder="Lösenord" value={password} 
                  onChange={e => setPassword(e.target.value)} />
              </div>
+             <p>{formerrors.password}</p>
 
              <div className="Age">
-                <input type="number" id="age" name="age" value={age}
+                <input type="number" id="Age" name="age" value={age}
                 onChange={e => setAge(e.target.value)} />
              </div>
+             <p>{formerrors.age}</p>
 
             <div className="City">
-                <input type="text" id="city" name="city" placeholder="Stad" value={city} 
+                <input type="text" id="City" name="city" placeholder="Stad" value={city} 
                 onChange={e => setCity(e.target.value)} />
             </div>
+            <p>{formerrors.city}</p>
 
-             <button>Skapa konto</button>
+
+            <div>
+             <button className="SubmitBtn">Skapa konto</button>
+             </div>
 
     </form>
     
+    <div>
+      Redan medlem? <Link to='/login'>Logga in här</Link>
+    </div>
+    
 
     </div>
+</section>
   )
 }
 
