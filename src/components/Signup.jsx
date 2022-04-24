@@ -54,10 +54,10 @@ const validation = () => {
     errors.firstName = "Vänligen skriv ditt förnamn"
   }
   if (!gender) {
-    errors.gender = "Vänligen bocka för ditt kön"
+    errors.gender = "Vänligen bocka för"
   }
   if (!datingGender) {
-    errors.datingGender = "Vänligen bocka för vilket du är intresserad av"
+    errors.datingGender = "Vänligen bocka för"
   }
   if (!lastName) {
     errors.lastName = "Vänligen skriv ditt efternamn"
