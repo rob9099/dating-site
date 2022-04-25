@@ -10,7 +10,7 @@ const [gender, setGender] = useState('');
 const [datingGender, setdatingGender] = useState('');
 const [firstName, setfirstName] = useState('');
 const [lastName, setlastName] = useState('');
-const [emailAdress, setemailAdress] = useState('');
+const [emailAddress, setemailAddress] = useState('');
 const [password, setPassword] = useState('');
 const [city, setCity] = useState('');
 const [age, setAge] = useState(18);
@@ -22,20 +22,20 @@ const formdata = {
   datingGender: datingGender,
   firstName: firstName,
   lastName: lastName,
-  emailAdress: emailAdress,
+  emailAddress: emailAddress,
   password: password,
   city: city,
   age: age
 }
 
 
-const handleSubmit = (e) => {
+const handleSubmit = async(e) => {
   e.preventDefault();
   setformErrors(validation(formdata))
   setisSubmit(true)
 
   if (Object.keys(formerrors).length === 0 && isSubmit) {
-    axios.post('http://localhost:5000/newProfile', formdata)
+    await axios.post('http://localhost:5000/newProfile', formdata)
     .then(res => console.log(res.data))
     .catch(error => console.log(error))
   } else {
@@ -54,25 +54,22 @@ const validation = () => {
     errors.firstName = "Vänligen skriv ditt förnamn"
   }
   if (!gender) {
-    errors.gender = "Vänligen bocka för"
+    errors.gender = "Ange om du är man eller kvinna"
   }
   if (!datingGender) {
-    errors.datingGender = "Vänligen bocka för"
+    errors.datingGender = "Ange om du söker efter en man eller kvinna"
   }
   if (!lastName) {
     errors.lastName = "Vänligen skriv ditt efternamn"
   }
-  if (!emailAdress) {
-    errors.emailAdress = "Vänligen skriv in din mail"
+  if (!emailAddress) {
+    errors.emailAddress = "Vänligen skriv in din mail"
   }
   if (!password) {
     errors.password = "Vänligen skriv in ditt lösenord"
   }
   if (!city) {
     errors.city = "Vänligen skriv in din stad"
-  }
-  if (!age) {
-    errors.age = "Vänligen skriv din ålder"
   }
   if (age < 18) {
     errors.age = "Du måste vara över 18"
@@ -126,9 +123,9 @@ const validation = () => {
             </div>
             <p>{formerrors.lastName}</p>
 
-            <div className="EmailAdress">
-                <input type="email" id="Email" name="email" placeholder="E-mail" value={emailAdress}
-                onChange={e => setemailAdress(e.target.value)} />
+            <div className="EmailAddress">
+                <input type="email" id="Email" name="email" placeholder="E-mail" value={emailAddress}
+                onChange={e => setemailAddress(e.target.value)} />
             </div> 
             <p>{formerrors.emailAdress}</p>
 
@@ -142,7 +139,7 @@ const validation = () => {
                 <input type="number" id="Age" name="age" value={age}
                 onChange={e => setAge(e.target.value)} />
              </div>
-             <p>{formerrors.age}</p>
+            <span><p>{formerrors.age}</p></span> 
 
             <div className="City">
                 <input type="text" id="City" name="city" placeholder="Stad" value={city} 
