@@ -2,12 +2,16 @@ import './css/styles.css';
 import Login from './components/Login'
 import Signup from './components/Signup'
 import Home from './components/Home'
+import Header from './components/Header';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 
 function App() {
   return (
     <div className="App">
+
+<Header />
+
 <Router>
       <div>
         <Routes>
