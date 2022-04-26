@@ -3,16 +3,51 @@ const mongoose = require('mongoose');
 require("dotenv").config();
 const routes = require ('./routes');
 const cors = require("cors");
-
+const bcrypt = require('bcrypt');
 const index = express();
 const port = 5000;
 
-const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
+const { createTokens, validateToken } = require("./JWT");
+const profileModel = require('./mongooseSchemas/profileSchema');
+mongoose.connect(process.env.DATABASE_ACCESS, () => console.log('Database connected'));
 
-mongoose.connect(process.env.DATABASE_ACCESS, () => console.log('Database connected'))
+index.use(express.json()); // använder denna funktion för att skicka data i body på postman/insomnia
+index.use(cookieParser());
 
-index.use(express.json()) // använder denna funktion för att skicka data i body på postman/insomnia
 
+index.post("/login", async (req, res) => {
+    const { emailAddress, password } = req.body;
+  
+    const user = await profileModel.findOne({ where: { emailAddress: emailAddress } });
+  
+    if (!user) res.status(400).json({ error: "User Doesn't Exist" });
+  
+    const dbPassword = user.password;
+    bcrypt.compare(password, dbPassword).then((match) => {
+      if (!match) {
+        res
+          .status(400)
+          .json({ error: "Wrong Username and Password Combination!" });
+      } else {
+        const accessToken = createTokens(user);
+  
+        res.cookie("access-token", accessToken, {
+          maxAge: 60 * 60 * 24 * 30 * 1000, // experation datum för tokencookien
+          httpOnly: true,
+        });
+  
+        res.json("LOGGED IN");
+      }
+    });
+  });
+
+  index.get("/profile", validateToken, (req, res) => {
+    res.json("profile");
+  });
+
+
+/*
 //users
 const users = [
     {
@@ -77,7 +112,7 @@ index.delete("/api/users/:userId", verify, (req,res) => {
         res.status(403).json("You are not able to delete other users");
     }
 });
-
+*/
 
 
 
