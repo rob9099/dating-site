@@ -1,7 +1,6 @@
 import '../css/styles.css'
 import React, {useEffect, useState} from 'react'
 import { Link } from 'react-router-dom';
-import img from '../img/logo.gif'
 import axios from 'axios';
 
 function Signup() {
@@ -81,8 +80,6 @@ const validation = () => {
 
   return (
   <section className="signUp">
-
-    <img src={img} alt="img"></img>
 
     <div className="innerSignup">
       <h1>Fyll i din information</h1>
