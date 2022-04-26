@@ -35,10 +35,10 @@ const handleSubmit = async(e) => {
 
   if (Object.keys(formerrors).length === 0 && isSubmit) {
     await axios.post('http://localhost:5000/newProfile', formdata)
-    .then(res => console.log(res.data))
+    .then(console.log("yes"))
     .catch(error => console.log(error))
   } else {
-    console.log(formerrors)
+    console.log("nope")
   }
 
 }
