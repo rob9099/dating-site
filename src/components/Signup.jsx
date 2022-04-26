@@ -18,7 +18,7 @@ const [formerrors, setformErrors] = useState({});
 const [isSubmit, setisSubmit] = useState(false)
 
 const formdata = {
-  gender: firstName,
+  gender: gender,
   datingGender: datingGender,
   firstName: firstName,
   lastName: lastName,
