@@ -2,10 +2,10 @@ const express = require ('express');
 const router = express.Router();
 const profileModel = require('./mongooseSchemas/profileSchema');
 const bcrypt = require('bcrypt');
-//const multer = require('multer');
+const multer = require('multer');
 const path = require('path');
 
-/*
+
 const multerStorage = multer.diskStorage({
     destination: '../public/profileImages',
     filename: function(req, file, callback){
@@ -14,13 +14,13 @@ const multerStorage = multer.diskStorage({
 })
 const multerImageUpload = multer({storage: multerStorage})
 
-*/
+
 
 
 
 
 //Skapa nytt profil
-router.post('/newProfile', /*multerImageUpload.single('profileImage'),*/ async (request, response) =>{
+router.post('/newProfile', multerImageUpload.single('profileImage'), async (request, response) =>{
 
     const saltedPassword = await bcrypt.genSalt(10);
     const encryptedPassword = await bcrypt.hash(request.body.password, saltedPassword)
@@ -32,12 +32,12 @@ router.post('/newProfile', /*multerImageUpload.single('profileImage'),*/ async (
         password: encryptedPassword,
         city: request.body.city,
         gender: request.body.gender,
-        age: request.body.gender,
+        age: request.body.age,
         datingGender: request.body.datingGender,
         profileBio: request.body.profileBio,
         employment: request.body.employment,
         hobbies: request.body.hobbies,
-        //profileImage: request.file.path
+        profileImage: request.file.path
     })
 
     newProfile.save()
