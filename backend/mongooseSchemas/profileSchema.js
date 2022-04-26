@@ -29,7 +29,7 @@ const profileSchema = new mongoose.Schema({
     },
     age: {
         type: Number,
-        required: true
+        required: false
     },
     datingGender: {
         type: String,
