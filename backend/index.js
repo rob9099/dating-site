@@ -15,6 +15,45 @@ mongoose.connect(process.env.DATABASE_ACCESS, () => console.log('Database connec
 index.use(express.json()); // använder denna funktion för att skicka data i body på postman/insomnia
 index.use(cookieParser());
 
+index.post('/newProfile', /*multerImageUpload.single('profileImage'),*/ async (request, response) =>{
+
+    const saltedPassword = await bcrypt.genSalt(10);
+    const encryptedPassword = await bcrypt.hash(request.body.password, saltedPassword)
+
+    let newProfile = new profileModel({
+        firstName: request.body.firstName,
+        lastName: request.body.lastName,
+        emailAddress: request.body.emailAddress,
+        password: encryptedPassword,
+        city: request.body.city,
+        gender: request.body.gender,
+        datingGender: request.body.datingGender,
+        profileBio: request.body.profileBio,
+        employment: request.body.employment,
+        hobbies: request.body.hobbies,
+        //profileImage: request.file.path
+    })
+
+    newProfile.save()
+    .then(data => {
+        response.json(data)
+    })
+    .catch(error => response.json(error))
+
+})
+
+
+//Hämta alla profiler
+index.get('/get', (request, response) =>{
+
+    profileModel.find()
+    .then(data => {
+        console.log(data)
+        response.json(data)
+    })
+    .catch(error => response.json(error))
+})
+
 
 index.post("/login", async (req, res) => {
     const { emailAddress, password } = req.body;
