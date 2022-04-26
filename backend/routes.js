@@ -40,11 +40,20 @@ router.post('/newProfile', multerImageUpload.single('profileImage'), async (requ
         profileImage: request.file.path
     })
 
-    newProfile.save()
-    .then(data => {
-        response.json(data)
-    })
-    .catch(error => response.json(error))
+
+    const newUserEmailAddress = newProfile.emailAddress;
+    const userExists = await profileModel.findOne({emailAddress: newUserEmailAddress})
+
+
+    if(userExists){
+        response.json('Error, user already exists')
+    }else{
+        newProfile.save()
+        .then(data => {
+            response.json(data)
+        })
+        .catch(error => response.json(error))
+    }
 
 })
 
