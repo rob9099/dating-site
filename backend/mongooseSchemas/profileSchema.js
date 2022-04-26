@@ -27,25 +27,25 @@ const profileSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    age: {
+        type: Number,
+        required: true
+    },
     datingGender: {
         type: String,
         required: true
     },
     profileBio: {
         type: String,
-        required: true
     },
     employment: {
         type: String,
-        required: true
     },
     hobbies: {
         type: Array,
-        required: true
     },
     profileImage: {
         type: String,
-        required: true
     },
     date: {
         type: Date,
