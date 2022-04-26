@@ -32,6 +32,7 @@ router.post('/newProfile', /*multerImageUpload.single('profileImage'),*/ async (
         password: encryptedPassword,
         city: request.body.city,
         gender: request.body.gender,
+        age: request.body.gender,
         datingGender: request.body.datingGender,
         profileBio: request.body.profileBio,
         employment: request.body.employment,
