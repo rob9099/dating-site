@@ -1,0 +1,26 @@
+@import url('https://fonts.googleapis.com/css2?family=Water+Brush&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Tapestry&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Bodoni&display=swap');
+
+.profilesContainer{
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    
+}
+
+.profileCard{
+    border: 4px double rgb(31, 190, 196);
+    border-radius: 10px;
+    box-shadow: 0px 0px 4px 2px #5d5d5d;
+    padding: 20px;
+    margin: 20px;
+    background: linear-gradient(90deg, rgba(240,108,232,1) 0%, rgba(108,191,195,1) 39%, rgba(0,255,244,1) 100%);
+}
+
+.profileCard h4, p, span{
+    margin: 5px;
+    font-family: 'Tapestry';
+    color: rgb(56, 56, 56);
+}
