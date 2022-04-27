@@ -1,5 +1,5 @@
 import '../css/styles.css'
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -13,65 +13,67 @@ const [emailAddress, setemailAddress] = useState('');
 const [password, setPassword] = useState('');
 const [city, setCity] = useState('');
 const [age, setAge] = useState(18);
+const [profileImage, setprofileImage] = useState([])
 const [formerrors, setformErrors] = useState({});
 const [isSubmit, setisSubmit] = useState(false)
+const [message, setMessage] = useState('')
 
-const formdata = {
-  gender: gender,
-  datingGender: datingGender,
-  firstName: firstName,
-  lastName: lastName,
-  emailAddress: emailAddress,
-  password: password,
-  city: city,
-  age: age
-}
+let formData = new FormData();
+formData.append('gender', gender);
+formData.append('datingGender', datingGender);
+formData.append('firstName', firstName);
+formData.append('lastName', lastName);
+formData.append('emailAddress', emailAddress);
+formData.append('password', password);
+formData.append('city', city);
+formData.append('age', age)
+formData.append('profileImage', profileImage);
 
 
 const handleSubmit = async(e) => {
   e.preventDefault();
-  setformErrors(validation(formdata))
+  setformErrors(validation(formData))
   setisSubmit(true)
 
   if (Object.keys(formerrors).length === 0 && isSubmit) {
-    await axios.post('http://localhost:5000/newProfile', formdata)
-    .then(console.log("yes"))
+    await axios.post('http://localhost:5000/newProfile', formData)
+    .then(res => console.log(res.data))
     .catch(error => console.log(error))
   } else {
     console.log("nope")
+
   }
 
 }
-
-
-
 
 const validation = () => {
   const errors = {};
 
   if (!firstName) {
-    errors.firstName = "Vänligen skriv ditt förnamn"
+    errors.firstName = "*Vänligen skriv ditt förnamn"
   }
   if (!gender) {
-    errors.gender = "Ange om du är man eller kvinna"
+    errors.gender = "*Ange om du är man eller kvinna"
   }
   if (!datingGender) {
-    errors.datingGender = "Ange om du söker efter en man eller kvinna"
+    errors.datingGender = "*Ange om du söker man eller kvinna"
   }
   if (!lastName) {
-    errors.lastName = "Vänligen skriv ditt efternamn"
+    errors.lastName = "*Vänligen skriv ditt efternamn"
   }
   if (!emailAddress) {
-    errors.emailAddress = "Vänligen skriv in din mail"
+    errors.emailAddress = "*Vänligen skriv in din mail"
   }
   if (!password) {
-    errors.password = "Vänligen skriv in ditt lösenord"
+    errors.password = "*Vänligen skriv in ditt lösenord"
   }
   if (!city) {
-    errors.city = "Vänligen skriv in din stad"
+    errors.city = "*Vänligen skriv in din stad"
   }
   if (age < 18) {
-    errors.age = "Du måste vara över 18"
+    errors.age = "*Du måste vara över 18"
+  } else {
+    setMessage("Du är nu registrerad användare")
   }
 
   return errors
@@ -84,7 +86,7 @@ const validation = () => {
     <div className="innerSignup">
       <h1>Fyll i din information</h1>
 
-    <form className="signupform" onSubmit={handleSubmit}>
+    <form className="signupform" encType='multipart/form-data' onSubmit={handleSubmit}>
 
             <div className="Gender">
                   <input type="radio" id="Male" name="Male" value="Jag är en man" 
@@ -118,7 +120,7 @@ const validation = () => {
                  <input type="text" id="Lastname" name="lastname" placeholder="Efternamn" value={lastName}
                  onChange={e => setlastName(e.target.value)} />
             </div>
-            <p>{formerrors.lastName}</p>
+            <span><p>{formerrors.lastName}</p></span>
 
             <div className="EmailAddress">
                 <input type="email" id="Email" name="email" placeholder="E-mail" value={emailAddress}
@@ -144,6 +146,18 @@ const validation = () => {
             </div>
             <p>{formerrors.city}</p>
 
+            <div className="UploadFile">
+              <label className="custom-file-upload">
+                <input type="file" id="profileImage" name="profileImage"
+                onChange={(e) => setprofileImage(e.target.files[0])} />
+                Välj din profilbild här
+              </label>
+            </div>
+
+            <div>
+              {message}
+            </div>
+
 
             <div>
              <button className="SubmitBtn">Skapa konto</button>
@@ -152,7 +166,7 @@ const validation = () => {
     </form>
     
     <div>
-      Redan medlem? <Link to='/login'>Logga in här</Link>
+      Redan medlem? <Link to='/login'>Logga in</Link>
     </div>
     
 
