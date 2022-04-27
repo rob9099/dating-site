@@ -93,8 +93,7 @@ router.post('/login', async (req,res) => {
             res.json("it matched");
             console.log("it matched");
             
-        }
-        if(!match) {
+        } else {
             console.log(match);
             res
             .json({login:"error"});
