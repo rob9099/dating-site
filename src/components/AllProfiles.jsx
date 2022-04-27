@@ -38,7 +38,7 @@ const AllProfiles = () => {
             })
             return(
                 <article key={profile._id} className='profileCard'>
-                    <img src={profile.profileImage[0]} alt="" height="400px"/>
+                    <img src={profile.profileImage[0]} alt="" height="400px" style={{ maxWidth: 225 }}/>
                     <h4>{profile.firstName}, {profile.age}</h4>
                     <h4>Kön: {profile.gender}</h4>
                     <h4>Stad: {profile.city}</h4>
