@@ -4,6 +4,9 @@ const profileModel = require('./mongooseSchemas/profileSchema');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
 const path = require('path');
+const { request } = require('http');
+
+
 
 
 const multerStorage = multer.diskStorage({
@@ -31,7 +34,7 @@ router.post('/newProfile', multerImageUpload.array('profileImage', 5), async (re
 
     }
 
-    let newProfile = new profileModel({
+    const newProfile = new profileModel({
         firstName: request.body.firstName,
         lastName: request.body.lastName,
         emailAddress: request.body.emailAddress,
@@ -60,6 +63,60 @@ router.post('/newProfile', multerImageUpload.array('profileImage', 5), async (re
         })
         .catch(error => response.json(error))
     }
+
+})
+
+
+router.post('/login', async (req,res) => {
+    const { emailAddress, password} = req.body;
+
+    const user = await profileModel.findOne({where: { emailAddress: emailAddress } }); 
+     
+
+    if (!user){
+        return res.status(400).json({
+            "errors": [
+                {
+                    "msg":"Invalid information",
+                }
+            ]
+        })
+    };
+    
+    const dbPassword = user.password
+    console.log(dbPassword);
+    console.log(password);
+    bcrypt.compare(dbPassword, password).then((match) => {
+        if(match) {
+            
+
+            res.json("it matched");
+            console.log("it matched");
+            
+        } else {
+            console.log(match);
+            res
+            .json({login:"error"});
+            console.log("failed");
+           
+       }
+
+    });
+
+    //let isMatch = await bcrypt.compare(password, user.encryptedPassword);
+    
+
+  // if (!isMatch){
+  //     return res.status(400).json({
+  //         "errors": [
+  //             {
+  //                 "msg":"Invalid information",
+  //             }
+  //         ]
+  //     })
+  // };
+  
+    
 
 })
 
