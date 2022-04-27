@@ -16,6 +16,7 @@ const [age, setAge] = useState(18);
 const [profileImage, setprofileImage] = useState([])
 const [formerrors, setformErrors] = useState({});
 const [isSubmit, setisSubmit] = useState(false)
+const [message, setMessage] = useState('')
 
 let formData = new FormData();
 formData.append('gender', gender);
@@ -40,6 +41,7 @@ const handleSubmit = async(e) => {
     .catch(error => console.log(error))
   } else {
     console.log("nope")
+
   }
 
 }
@@ -48,28 +50,30 @@ const validation = () => {
   const errors = {};
 
   if (!firstName) {
-    errors.firstName = "Vänligen skriv ditt förnamn"
+    errors.firstName = "*Vänligen skriv ditt förnamn"
   }
   if (!gender) {
-    errors.gender = "Ange om du är man eller kvinna"
+    errors.gender = "*Ange om du är man eller kvinna"
   }
   if (!datingGender) {
-    errors.datingGender = "Ange om du söker efter en man eller kvinna"
+    errors.datingGender = "*Ange om du söker man eller kvinna"
   }
   if (!lastName) {
-    errors.lastName = "Vänligen skriv ditt efternamn"
+    errors.lastName = "*Vänligen skriv ditt efternamn"
   }
   if (!emailAddress) {
-    errors.emailAddress = "Vänligen skriv in din mail"
+    errors.emailAddress = "*Vänligen skriv in din mail"
   }
   if (!password) {
-    errors.password = "Vänligen skriv in ditt lösenord"
+    errors.password = "*Vänligen skriv in ditt lösenord"
   }
   if (!city) {
-    errors.city = "Vänligen skriv in din stad"
+    errors.city = "*Vänligen skriv in din stad"
   }
   if (age < 18) {
-    errors.age = "Du måste vara över 18"
+    errors.age = "*Du måste vara över 18"
+  } else {
+    setMessage("Du är nu registrerad användare")
   }
 
   return errors
@@ -116,7 +120,7 @@ const validation = () => {
                  <input type="text" id="Lastname" name="lastname" placeholder="Efternamn" value={lastName}
                  onChange={e => setlastName(e.target.value)} />
             </div>
-            <p>{formerrors.lastName}</p>
+            <span><p>{formerrors.lastName}</p></span>
 
             <div className="EmailAddress">
                 <input type="email" id="Email" name="email" placeholder="E-mail" value={emailAddress}
@@ -143,8 +147,15 @@ const validation = () => {
             <p>{formerrors.city}</p>
 
             <div className="UploadFile">
+              <label className="custom-file-upload">
                 <input type="file" id="profileImage" name="profileImage"
                 onChange={(e) => setprofileImage(e.target.files[0])} />
+                Välj din profilbild här
+              </label>
+            </div>
+
+            <div>
+              {message}
             </div>
 
 
@@ -155,7 +166,7 @@ const validation = () => {
     </form>
     
     <div>
-      Redan medlem? <Link to='/login'>Logga in här</Link>
+      Redan medlem? <Link to='/login'>Logga in</Link>
     </div>
     
 

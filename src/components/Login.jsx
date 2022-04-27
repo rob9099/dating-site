@@ -1,5 +1,6 @@
 import '../css/styles.css'
 import React, {useState} from 'react'
+import { Link } from 'react-router-dom';
 
 function Login() {
 
@@ -8,7 +9,7 @@ const [password, setPassword] = useState('')
 
   return (
     <div className='Login'>
-      <h1>Logga in här</h1>
+      <h1>Inloggning</h1>
 
       <div className="EmailAdress">
           <input type="email" id="Email" name="email" placeholder="E-mail" value={emailAdress}
@@ -21,6 +22,10 @@ const [password, setPassword] = useState('')
       </div>
 
       <button>Logga in</button>
+
+      <div>
+        Har du inget konto? <Link to="/">Registrera dig här</Link>
+      </div>
 
 
     </div>
