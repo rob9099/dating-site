@@ -1,5 +1,5 @@
 import '../css/styles.css'
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -13,38 +13,36 @@ const [emailAddress, setemailAddress] = useState('');
 const [password, setPassword] = useState('');
 const [city, setCity] = useState('');
 const [age, setAge] = useState(18);
+const [profileImage, setprofileImage] = useState([])
 const [formerrors, setformErrors] = useState({});
 const [isSubmit, setisSubmit] = useState(false)
 
-const formdata = {
-  gender: gender,
-  datingGender: datingGender,
-  firstName: firstName,
-  lastName: lastName,
-  emailAddress: emailAddress,
-  password: password,
-  city: city,
-  age: age
-}
+let formData = new FormData();
+formData.append('gender', gender);
+formData.append('datingGender', datingGender);
+formData.append('firstName', firstName);
+formData.append('lastName', lastName);
+formData.append('emailAddress', emailAddress);
+formData.append('password', password);
+formData.append('city', city);
+formData.append('age', age)
+formData.append('profileImage', profileImage);
 
 
 const handleSubmit = async(e) => {
   e.preventDefault();
-  setformErrors(validation(formdata))
+  setformErrors(validation(formData))
   setisSubmit(true)
 
   if (Object.keys(formerrors).length === 0 && isSubmit) {
-    await axios.post('http://localhost:5000/newProfile', formdata)
-    .then(console.log("yes"))
+    await axios.post('http://localhost:5000/newProfile', formData)
+    .then(res => console.log(res.data))
     .catch(error => console.log(error))
   } else {
     console.log("nope")
   }
 
 }
-
-
-
 
 const validation = () => {
   const errors = {};
@@ -84,7 +82,7 @@ const validation = () => {
     <div className="innerSignup">
       <h1>Fyll i din information</h1>
 
-    <form className="signupform" onSubmit={handleSubmit}>
+    <form className="signupform" encType='multipart/form-data' onSubmit={handleSubmit}>
 
             <div className="Gender">
                   <input type="radio" id="Male" name="Male" value="Jag är en man" 
@@ -143,6 +141,11 @@ const validation = () => {
                 onChange={e => setCity(e.target.value)} />
             </div>
             <p>{formerrors.city}</p>
+
+            <div className="UploadFile">
+                <input type="file" id="profileImage" name="profileImage"
+                onChange={(e) => setprofileImage(e.target.files[0])} />
+            </div>
 
 
             <div>
