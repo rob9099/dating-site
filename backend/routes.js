@@ -67,8 +67,56 @@ router.post('/newProfile', multerImageUpload.array('profileImage', 5), async (re
 })
 
 
+
+/*
+    User.findOne({email})
+    .then(savedUser => {
+        if(!savedUser){
+            return res.status(422).json({error:"Invalid email or password"})
+        }
+        bcrypt.compare(password,savedUser.password)
+        .then(doMatch=>{
+            if(doMatch){
+                // res.json({message:"SignIn successfull"})
+                const token = jwt.sign({_id:savedUser._id},JWT_SECRET)
+                const {_id,name,email,role} = savedUser
+                res.json({token,user:{_id,email,name,role}})
+            }else{
+                return res.status(422).json({error:"Invalid Email or Password"})
+            }
+        }).catch(err=>{
+            console.log(err);
+        })
+    }).
+    catch(err=>{
+        console.log(err);
+    })
+    */
 router.post('/login', async (req,res) => {
-    const { emailAddress, password} = req.body;
+
+
+    const { emailAddress, password } = req.body;
+
+    profileModel.findOne({emailAddress: emailAddress})
+    .then(savedUser => {
+        if(!savedUser) {
+            return res.status(400).json({error:"Invalid email or password"})
+        }
+        bcrypt.compare(password, savedUser.password)
+        .then((Match) => {
+            if(Match) {
+                res.json("it matched");
+                console.log("it matched");
+            } else {
+                res.json({login:"Invalid email or password"});
+                console.log("failed");
+            }
+        }).catch(error => {
+            console.log(error)
+        })
+    })
+
+    /*
 
     const user = await profileModel.findOne({where: { emailAddress: emailAddress } }); 
      
@@ -84,8 +132,7 @@ router.post('/login', async (req,res) => {
     };
     
     const dbPassword = user.password
-    console.log(dbPassword);
-    console.log(password);
+    console.log(bcrypt.compare);
     bcrypt.compare(dbPassword, password).then((match) => {
         if(match) {
             
@@ -100,6 +147,7 @@ router.post('/login', async (req,res) => {
             console.log("failed");
            
        }
+       
 
     });
 
@@ -116,6 +164,7 @@ router.post('/login', async (req,res) => {
   //     })
   // };
   
+  */
     
 
 })
