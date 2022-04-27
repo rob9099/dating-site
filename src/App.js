@@ -3,6 +3,7 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import Home from './components/Home'
 import Header from './components/Header';
+import AllProfiles from './components/AllProfiles';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<Home />}></Route>
           <Route path="/login" element={<Login />}></Route>
           <Route path="/signup" element={<Signup />}></Route>
+          <Route path="/allProfiles" element={<AllProfiles />}></Route>
         </Routes>
       </div>
 
