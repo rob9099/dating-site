@@ -1,14 +1,16 @@
 import '../css/styles.css'
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom';
+import Header from './Header';
 
 function Login() {
 
 const [emailAdress, setemailAdress] = useState('');
-const [password, setPassword] = useState('')
+const [password, setPassword] = useState('');
 
   return (
     <div className='Login'>
+      <Header />
       <h1>Inloggning</h1>
 
       <div className="EmailAdress">
@@ -24,7 +26,7 @@ const [password, setPassword] = useState('')
       <button>Logga in</button>
 
       <div>
-        Har du inget konto? <Link to="/">Registrera dig här</Link>
+        Har du inget konto? <Link to="/signup">Registrera dig här</Link>
       </div>
 
 

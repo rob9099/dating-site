@@ -2,6 +2,7 @@ import '../css/styles.css'
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Header from './Header';
 
 function Signup() {
 
@@ -84,6 +85,7 @@ const validation = () => {
   <section className="signUp">
 
     <div className="innerSignup">
+    <Header />
       <h1>Fyll i din information</h1>
 
     <form className="signupform" encType='multipart/form-data' onSubmit={handleSubmit}>
@@ -165,12 +167,9 @@ const validation = () => {
 
     </form>
     
-    <div>
-      Redan medlem? <Link to='/login'>Logga in</Link>
-    </div>
-    
 
     </div>
+    Redan medlem? <Link to='/login'>Logga in</Link>
 </section>
   )
 }

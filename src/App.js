@@ -1,7 +1,6 @@
 import './css/styles.css';
 import Login from './components/Login'
 import Signup from './components/Signup'
-import Header from './components/Header';
 import AllProfiles from './components/AllProfiles';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
@@ -9,8 +8,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 function App() {
   return (
     <div className="App">
-
-<Header />
 
 <Router>
       <div>
