@@ -5,30 +5,7 @@
     margin: 0 auto;
     text-align: center;
     font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding-top: 10px;
-    width: 40%;
-}
-
-.signUp,
-.Links,
-.Login {
-    margin-left: 40%;
-}
-
-.Header {
-    width: 80%;
-    padding: 2%;
-    display: flex;
-    justify-content: center;
-}
-
-
-.Links {
-    padding: 20px;
-}
-
-input[type=file] {
-    display: none;
+    width: 60%;
 }
 
 
