@@ -5,6 +5,7 @@ const bcrypt = require('bcrypt');
 const multer = require('multer');
 const path = require('path');
 const { request } = require('http');
+const JWT = require('jsonwebtoken');
 
 
 
@@ -27,6 +28,16 @@ router.post('/newProfile', multerImageUpload.array('profileImage', 5), async (re
 
     const saltedPassword = await bcrypt.genSalt(10);
     const encryptedPassword = await bcrypt.hash(request.body.password, saltedPassword)
+    const token = JWT.sign({
+        emailAddress
+    
+    }, "secretkey1337", {
+        expiresIn: 3600000
+    })
+    
+    res.json({
+        token
+    })
 
     let imagePaths = [];
     for (pathsOfImages of request.files){
@@ -63,6 +74,8 @@ router.post('/newProfile', multerImageUpload.array('profileImage', 5), async (re
         })
         .catch(error => response.json(error))
     }
+
+   
 
 })
 
@@ -114,7 +127,28 @@ router.post('/login', async (req,res) => {
         }).catch(error => {
             console.log(error)
         })
+
+        const token =  JWT.sign({
+            emailAddress
+        
+        }, "secretkey1337", {
+            expiresIn: 3600000
+        })
+        
+        res.json({
+            token
+        })
     })
+
+    /*const token = await JWT.sign({                           // jason web token
+        emailAddress
+    }, "thisisasecretkey", {
+        expiresIn: 3600000
+    })
+
+    res.json({
+        token
+    }) */
 
     /*
 
