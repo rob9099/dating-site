@@ -59,14 +59,12 @@ router.post('/newProfile', multerImageUpload.array('profileImage', 5), async (re
         response.json('Error, user already exists')
     }else{
         newProfile.save()
-        .then(data => {
+        response.json('User created')
+        /*.then(data => {
             response.json(data)
         })
-        .catch(error => response.json(error))
+        .catch(error => response.json(error))*/
     }
-
-   
-
 })
 
 
