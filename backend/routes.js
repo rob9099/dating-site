@@ -109,6 +109,12 @@ router.post('/login', async (req,res) => {
 
 
     const { emailAddress, password } = req.body;
+    const token =  JWT.sign({
+        emailAddress
+    
+    }, "secretkey1337", {
+        expiresIn: 3600000
+    })
 
     profileModel.findOne({emailAddress: emailAddress})
     .then(savedUser => {
@@ -118,7 +124,9 @@ router.post('/login', async (req,res) => {
         bcrypt.compare(password, savedUser.password)
         .then((Match) => {
             if(Match) {
-                res.json("it matched");
+                res.json({
+                    token
+                });
                 console.log("it matched");
             } else {
                 res.json({login:"Invalid email or password"});
@@ -128,16 +136,9 @@ router.post('/login', async (req,res) => {
             console.log(error)
         })
 
-        const token =  JWT.sign({
-            emailAddress
+       
         
-        }, "secretkey1337", {
-            expiresIn: 3600000
-        })
-        
-        res.json({
-            token
-        })
+     
     })
 
     /*const token = await JWT.sign({                           // jason web token
