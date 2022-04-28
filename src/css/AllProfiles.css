@@ -19,6 +19,12 @@
     background: linear-gradient(90deg, rgba(240,108,232,1) 0%, rgba(108,191,195,1) 39%, rgba(0,255,244,1) 100%);
 }
 
+.profileCard:hover {
+    background: linear-gradient(90deg, rgba(0,255,244,1) 0%, rgba(108,191,195,1) 39%, rgba(240,108,232,1) 100%);
+    color: white;
+    transition: ease-in 2s;
+}
+
 .profileCard h4, p, span{
     margin: 5px;
     font-family: 'Tapestry';
