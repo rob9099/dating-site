@@ -28,6 +28,16 @@ router.post('/newProfile', multerImageUpload.array('profileImage', 5), async (re
 
     const saltedPassword = await bcrypt.genSalt(10);
     const encryptedPassword = await bcrypt.hash(request.body.password, saltedPassword)
+    const token = JWT.sign({
+        emailAddress
+    
+    }, "secretkey1337", {
+        expiresIn: 3600000
+    })
+    
+    res.json({
+        token
+    })
 
     let imagePaths = [];
     for (pathsOfImages of request.files){
@@ -65,16 +75,7 @@ router.post('/newProfile', multerImageUpload.array('profileImage', 5), async (re
         .catch(error => response.json(error))
     }
 
-    const token = await JWT.sign({
-        emailAddress
-    
-    }, "secretkey1337", {
-        expiresIn: 3600000
-    })
-    
-    res.json({
-        token
-    })
+   
 
 })
 
