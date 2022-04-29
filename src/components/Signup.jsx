@@ -1,10 +1,13 @@
 import '../css/styles.css'
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Header from './Header';
+import { useNavigate } from 'react-router-dom';
+import Login from './Login';
 
-function Signup() {
+
+const Signup = () => {
 
 const [gender, setGender] = useState('');
 const [datingGender, setdatingGender] = useState('');
@@ -16,8 +19,10 @@ const [city, setCity] = useState('');
 const [age, setAge] = useState(18);
 const [profileImage, setprofileImage] = useState([])
 const [formerrors, setformErrors] = useState({});
-const [isSubmit, setisSubmit] = useState(false)
-const [message, setMessage] = useState('')
+const [isSubmit, setisSubmit] = useState(false);
+const [message, setMessage] = useState('');
+
+let navigate = useNavigate()
 
 let formData = new FormData();
 formData.append('gender', gender);
@@ -27,7 +32,7 @@ formData.append('lastName', lastName);
 formData.append('emailAddress', emailAddress);
 formData.append('password', password);
 formData.append('city', city);
-formData.append('age', age)
+formData.append('age', age);
 formData.append('profileImage', profileImage);
 
 
@@ -36,16 +41,27 @@ const handleSubmit = async(e) => {
   setformErrors(validation(formData))
   setisSubmit(true)
 
+
   if (Object.keys(formerrors).length === 0 && isSubmit) {
     await axios.post('http://localhost:5000/newProfile', formData)
-    .then(res => console.log(res.data))
+    .then(function(response) {
+      if (response.data === "Error, user already exists") {
+        setMessage('Emailadressen finns redan')
+        console.log("Email finns redan")
+      } else if (response.data === "User created") {
+        navigate('/Login')
+        console.log("success")
+      }
+    })
     .catch(error => console.log(error))
+
   } else {
     console.log("nope")
 
   }
 
 }
+
 
 const validation = () => {
   const errors = {};
@@ -73,13 +89,22 @@ const validation = () => {
   }
   if (age < 18) {
     errors.age = "*Du måste vara över 18"
-  } else {
-    setMessage("Du är nu registrerad användare")
+
   }
 
-  return errors
-  
+  return errors 
+
 }
+
+
+
+/*
+ if (res.data === "User already exists") {
+                        return <Register />
+                    } else if (res.data === "User created") {
+                        return <Registerconfirmed />
+                    }
+                    */
 
   return (
   <section className="signUp">
@@ -122,7 +147,7 @@ const validation = () => {
                  <input type="text" id="Lastname" name="lastname" placeholder="Efternamn" value={lastName}
                  onChange={e => setlastName(e.target.value)} />
             </div>
-            <span><p>{formerrors.lastName}</p></span>
+          <p>{formerrors.lastName}</p>
 
             <div className="EmailAddress">
                 <input type="email" id="Email" name="email" placeholder="E-mail" value={emailAddress}
@@ -140,7 +165,7 @@ const validation = () => {
                 <input type="number" id="Age" name="age" value={age}
                 onChange={e => setAge(e.target.value)} />
              </div>
-            <span><p>{formerrors.age}</p></span> 
+            <p>{formerrors.age}</p> 
 
             <div className="City">
                 <input type="text" id="City" name="city" placeholder="Stad" value={city} 
@@ -152,14 +177,10 @@ const validation = () => {
               <label className="custom-file-upload">
                 <input type="file" id="profileImage" name="profileImage"
                 onChange={(e) => setprofileImage(e.target.files[0])} />
-                Välj din profilbild här
               </label>
             </div>
 
-            <div>
-              {message}
-            </div>
-
+          <p>{message}</p>
 
             <div>
              <button className="SubmitBtn">Skapa konto</button>
@@ -171,7 +192,9 @@ const validation = () => {
     </div>
     Redan medlem? <Link to='/login'>Logga in</Link>
 </section>
+
   )
 }
+
 
 export default Signup
