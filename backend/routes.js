@@ -93,10 +93,10 @@ router.post('/newProfile', multerImageUpload.array('profileImage', 5), async (re
         console.log(err);
     })
     */
-router.post('/login', async (req,res) => {
+router.post('/login', async (request,response) => {
 
 
-    const { emailAddress, password } = req.body;
+    const { emailAddress, password } = request.body;
     const token =  JWT.sign({
         emailAddress
     
@@ -107,17 +107,17 @@ router.post('/login', async (req,res) => {
     profileModel.findOne({emailAddress: emailAddress})
     .then(savedUser => {
         if(!savedUser) {
-            return res.status(400).json({error:"Invalid email or password"})
+            return response.json("Invalid email or password")
         }
         bcrypt.compare(password, savedUser.password)
         .then((Match) => {
             if(Match) {
-                res.json({
+                response.json({
                     token
                 });
                 console.log("it matched");
             } else {
-                res.json({login:"Invalid email or password"});
+                response.json("Invalid email or password");
                 console.log("failed");
             }
         }).catch(error => {
