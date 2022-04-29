@@ -3,8 +3,6 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Header from './Header';
-import { useNavigate } from 'react-router-dom';
-import Login from './Login';
 
 
 const Signup = () => {
@@ -19,10 +17,8 @@ const [city, setCity] = useState('');
 const [age, setAge] = useState(18);
 const [profileImage, setprofileImage] = useState([])
 const [formerrors, setformErrors] = useState({});
-const [isSubmit, setisSubmit] = useState(false);
 const [message, setMessage] = useState('');
 
-let navigate = useNavigate()
 
 let formData = new FormData();
 formData.append('gender', gender);
@@ -36,28 +32,24 @@ formData.append('age', age);
 formData.append('profileImage', profileImage);
 
 
-const handleSubmit = async(e) => {
+const handleSubmit = (e) => {
   e.preventDefault();
   setformErrors(validation(formData))
-  setisSubmit(true)
 
 
-  if (Object.keys(formerrors).length === 0 && isSubmit) {
-    await axios.post('http://localhost:5000/newProfile', formData)
+  if (Object.keys(formerrors).length === 0) {
+    axios.post('http://localhost:5000/newProfile', formData)
     .then(function(response) {
-      if (response.data === "Error, user already exists") {
-        setMessage('Emailadressen finns redan')
-        console.log("Email finns redan")
-      } else if (response.data === "User created") {
-        navigate('/Login')
-        console.log("success")
+      if (response.data === "User created") {
+        setMessage("Du är nu registrerad användare")
+      } else if (response.data === "Error, user already exists") {
+        setMessage("Email finns redan")
       }
+
     })
     .catch(error => console.log(error))
-
   } else {
     console.log("nope")
-
   }
 
 }
