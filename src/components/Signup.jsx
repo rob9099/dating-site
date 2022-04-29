@@ -3,6 +3,9 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Header from './Header';
+import { useNavigate } from 'react-router-dom';
+import Login from './Login';
+
 
 const Signup = () => {
 
@@ -18,6 +21,8 @@ const [profileImage, setprofileImage] = useState([])
 const [formerrors, setformErrors] = useState({});
 const [isSubmit, setisSubmit] = useState(false);
 const [message, setMessage] = useState('');
+
+let navigate = useNavigate()
 
 let formData = new FormData();
 formData.append('gender', gender);
@@ -41,8 +46,10 @@ const handleSubmit = async(e) => {
     await axios.post('http://localhost:5000/newProfile', formData)
     .then(function(response) {
       if (response.data === "Error, user already exists") {
+        setMessage('Emailadressen finns redan')
         console.log("Email finns redan")
       } else if (response.data === "User created") {
+        navigate('/Login')
         console.log("success")
       }
     })
@@ -158,7 +165,7 @@ const validation = () => {
                 <input type="number" id="Age" name="age" value={age}
                 onChange={e => setAge(e.target.value)} />
              </div>
-            <span><p>{formerrors.age}</p></span> 
+            <p>{formerrors.age}</p> 
 
             <div className="City">
                 <input type="text" id="City" name="city" placeholder="Stad" value={city} 
